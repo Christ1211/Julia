@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanchard - Minimalist Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text: #2a2a2a;
+            --bg: #ffffff;
+            --light: #f8f8f8;
+            --border: #e0e0e0;
+            --muted: #999999;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            padding: 40px 60px;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(60px, 8vw, 120px);
+            font-weight: 200;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 150px 60px;
+        }
+
+        /* Projects */
+        .projects {
+            margin-bottom: 200px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 80px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px;
+        }
+
+        .project {
+            cursor: pointer;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 500px;
+            background-color: var(--light);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .project:hover .project-image img {
+            transform: scale(1.02);
+        }
+
+        .project h3 {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .project p {
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        /* About */
+        .about {
+            margin-bottom: 200px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 120px;
+            align-items: start;
+        }
+
+        .about-content {
+            padding-top: 20px;
+        }
+
+        .about-content p {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* Services */
+        .services {
+            margin-bottom: 200px;
+        }
+
+        .service-list {
+            display: grid;
+            gap: 60px;
+        }
+
+        .service {
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .service h3 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .service p {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 800px;
+        }
+
+        /* Contact */
+        .contact {
+            text-align: center;
+            padding: 150px 60px;
+            background-color: var(--light);
+        }
+
+        .contact h2 {
+            font-size: 60px;
+            font-weight: 200;
+            margin-bottom: 60px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            font-size: 18px;
+        }
+
+        .contact-info a {
+            color: var(--text);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 60px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            main {
+                padding: 100px 20px;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .project-image {
+                height: 300px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">BLANCHARD</div>
+            <ul class="nav-links">
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div>
+            <h1>Design in Its<br>Purest Form</h1>
+            <p>Architecture & Interiors</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Projects -->
+        <section class="projects" id="projects">
+            <p class="section-label">Selected Projects</p>
+            <div class="project-grid">
+                <div class="project">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&q=80" alt="Residence One">
+                    </div>
+                    <h3>Residence One</h3>
+                    <p>Private Home, California</p>
+                </div>
+                <div class="project">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80" alt="Office Tower">
+                    </div>
+                    <h3>Office Tower</h3>
+                    <p>Commercial Building, New York</p>
+                </div>
+                <div class="project">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Gallery Space">
+                    </div>
+                    <h3>Gallery Space</h3>
+                    <p>Art Gallery, London</p>
+                </div>
+                <div class="project">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1431576901776-e539bd916ba2?w=800&q=80" alt="Beach House">
+                    </div>
+                    <h3>Beach House</h3>
+                    <p>Coastal Residence, Australia</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about" id="about">
+            <div>
+                <p class="section-label">About</p>
+            </div>
+            <div class="about-content">
+                <p>We are an architecture and design studio dedicated to creating spaces that honor simplicity and function. Our work is guided by the belief that good design should be felt, not just seen.</p>
+                <p>Founded in 2010, we've completed over 200 projects worldwide, each one a testament to our commitment to timeless design and meticulous craftsmanship.</p>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section class="services" id="services">
+            <p class="section-label">Services</p>
+            <div class="service-list">
+                <div class="service">
+                    <h3>Architecture</h3>
+                    <p>Complete architectural services from concept to construction, creating buildings that inspire and endure.</p>
+                </div>
+                <div class="service">
+                    <h3>Interior Design</h3>
+                    <p>Thoughtful interior spaces that balance beauty with functionality, tailored to each client's unique needs.</p>
+                </div>
+                <div class="service">
+                    <h3>Consultation</h3>
+                    <p>Expert guidance for projects at any stage, helping bring clarity and excellence to your vision.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2>Let's Work Together</h2>
+        <div class="contact-info">
+            <a href="mailto:info@blanchard.com">info@blanchard.com</a>
+            <a href="tel:+14155551234">+1 415 555 1234</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Blanchard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Simple fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply to elements
+        const elements = document.querySelectorAll('.project, .service, .about-content');
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

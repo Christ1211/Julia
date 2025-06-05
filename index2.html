@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanchard Studios - Minimalist Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --bg-light: #ffffff;
+            --bg-alt: #fafafa;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --accent: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: var(--primary);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.hover {
+            transform: scale(1.5);
+            background-color: rgba(26, 26, 26, 0.1);
+        }
+
+        /* Navigation */
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 30px 60px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 60px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 200;
+            letter-spacing: -1px;
+        }
+
+        .menu-items {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .menu-items a {
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .menu-items a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .menu-items a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-text {
+            padding: 0 60px 0 120px;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(60px, 8vw, 120px);
+            font-weight: 100;
+            line-height: 0.9;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+        }
+
+        .hero-text .subtitle {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        .hero-visual {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 10%;
+            right: -20%;
+            width: 120%;
+            height: 80%;
+            background: url('https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=1200&q=80') center/cover;
+        
+            transition: all 0.5s ease;
+        }
+
+        .hero-image:hover {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* Split Button */
+        .split-button {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-button span {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .split-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            transition: left 0.3s ease;
+        }
+
+        .split-button:hover::before {
+            left: 0;
+        }
+
+        .split-button:hover span {
+            color: white;
+        }
+
+        .split-button::after {
+            content: '→';
+            margin-left: 20px;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .split-button:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* Work Section */
+        .work {
+            padding: 150px 0;
+            background-color: var(--bg-alt);
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            padding: 0 120px;
+            margin-bottom: 100px;
+        }
+
+        .section-number {
+            font-size: 120px;
+            font-weight: 100;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .section-title h2 {
+            font-size: 48px;
+            font-weight: 200;
+            margin-bottom: 20px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 600px;
+        }
+
+        /* Asymmetric Grid */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            padding: 0 120px;
+        }
+
+        .work-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .work-item:nth-child(1) {
+            grid-column: 1 / 8;
+            height: 500px;
+        }
+
+        .work-item:nth-child(2) {
+            grid-column: 8 / 13;
+            height: 500px;
+        }
+
+        .work-item:nth-child(3) {
+            grid-column: 1 / 5;
+            height: 400px;
+        }
+
+        .work-item:nth-child(4) {
+            grid-column: 5 / 13;
+            height: 400px;
+        }
+
+        .work-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+      
+        }
+
+        .work-item:hover .work-image {
+            transform: scale(1.05);
+    
+        }
+
+        .work-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .work-item:hover .work-info {
+            transform: translateY(0);
+        }
+
+        .work-info h3 {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .work-info p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Philosophy Section */
+        .philosophy {
+            padding: 150px 120px;
+            background-color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 120px;
+            align-items: center;
+        }
+
+        .philosophy-text h3 {
+            font-size: 36px;
+            font-weight: 200;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .philosophy-text p {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .philosophy-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: 600px;
+        }
+
+        .philosophy-image {
+            background-color: var(--accent);
+            overflow: hidden;
+        }
+
+        .philosophy-image:first-child {
+            align-self: start;
+        }
+
+        .philosophy-image:last-child {
+            align-self: end;
+        }
+
+        .philosophy-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            transition: filter 0.5s ease;
+        }
+
+        .philosophy-image:hover img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 150px 0;
+            background-color: var(--bg-alt);
+        }
+
+        .services-container {
+            padding: 0 120px;
+        }
+
+        .service-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 60px;
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            padding-left: 20px;
+        }
+
+        .service-number {
+            font-size: 72px;
+            font-weight: 100;
+            color: var(--accent);
+        }
+
+        .service-content h4 {
+            font-size: 32px;
+            font-weight: 200;
+            margin-bottom: 15px;
+        }
+
+        .service-content p {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+        }
+
+        .service-arrow {
+            font-size: 24px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover .service-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 150px 120px;
+            background-color: white;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 72px;
+            font-weight: 100;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            margin-top: 80px;
+        }
+
+        .contact-item h5 {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .contact-item a {
+            font-size: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 120px;
+            background-color: var(--bg-alt);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .social-links a {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-wrapper,
+            .hero-text,
+            .section-header,
+            .work-grid,
+            .philosophy,
+            .services-container,
+            .contact,
+            footer {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .philosophy {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .philosophy-visual {
+                height: 400px;
+            }
+
+            .work-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .work-item {
+                grid-column: 1 !important;
+                height: 300px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cursor {
+                display: none;
+            }
+
+            .menu-items {
+                gap: 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 60px;
+            }
+
+            .section-header {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .contact h2 {
+                font-size: 48px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Navigation -->
+    <div class="nav-wrapper">
+        <nav>
+            <div class="logo">blanchard</div>
+            <ul class="menu-items">
+                <li><a href="#work">work</a></li>
+                <li><a href="#about">about</a></li>
+                <li><a href="#services">services</a></li>
+                <li><a href="#contact">contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Design<br>Without<br>Limits</h1>
+            <p class="subtitle">Creating spaces that transcend the ordinary</p>
+            <a href="#work" class="split-button">
+                <span>Explore Our Work</span>
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-image"></div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section class="work" id="work">
+        <div class="section-header">
+            <div class="section-number">01</div>
+            <div class="section-title">
+                <h2>Selected Works</h2>
+                <p>A curated collection of our most transformative projects, where minimalism meets functionality.</p>
+            </div>
+        </div>
+        <div class="work-grid">
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1567225557594-88d73e55f2cb?w=800&q=80" alt="Urban Residence" class="work-image">
+                <div class="work-info">
+                    <h3>Urban Residence</h3>
+                    <p>Contemporary living redefined</p>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1488901512066-cd403111aeb2?w=800&q=80" alt="Creative Studio" class="work-image">
+                <div class="work-info">
+                    <h3>Creative Studio</h3>
+                    <p>Where ideas come to life</p>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80" alt="Executive Office" class="work-image">
+                <div class="work-info">
+                    <h3>Executive Office</h3>
+                    <p>Professional elegance</p>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1497366754035-f200581a8d4d?w=800&q=80" alt="Retail Space" class="work-image">
+                <div class="work-info">
+                    <h3>Retail Experience</h3>
+                    <p>Commerce meets artistry</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy" id="about">
+        <div class="philosophy-text">
+            <h3>We believe in the power of space to transform lives</h3>
+            <p>Our approach is rooted in the belief that great design should be felt, not just seen. Every line, every material, every space we create is carefully considered to enhance the human experience.</p>
+            <p>With a focus on minimalism and functionality, we strip away the unnecessary to reveal the essential beauty in every project. Our designs are timeless, sustainable, and deeply personal.</p>
+        </div>
+        <div class="philosophy-visual">
+            <div class="philosophy-image">
+                <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&q=80" alt="Minimalist architecture">
+            </div>
+            <div class="philosophy-image">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Modern design">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <div class="section-number">02</div>
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>Comprehensive design solutions tailored to your vision</p>
+            </div>
+        </div>
+        <div class="services-container">
+            <div class="service-item">
+                <div class="service-number">01</div>
+                <div class="service-content">
+                    <h4>Interior Architecture</h4>
+                    <p>Complete spatial transformation from concept to reality, creating environments that inspire and endure.</p>
+                </div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-item">
+                <div class="service-number">02</div>
+                <div class="service-content">
+                    <h4>Design Consultation</h4>
+                    <p>Expert guidance to help you navigate design decisions with confidence and clarity.</p>
+                </div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-item">
+                <div class="service-number">03</div>
+                <div class="service-content">
+                    <h4>Project Management</h4>
+                    <p>Seamless execution from initial sketches to final installation, ensuring your vision comes to life.</p>
+                </div>
+                <div class="service-arrow">→</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Let's Create Something<br>Extraordinary</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <h5>Email</h5>
+                <a href="mailto:studio@blanchard.com">studio@blanchard.com</a>
+            </div>
+            <div class="contact-item">
+                <h5>Phone</h5>
+                <a href="tel:+14155551234">+1 415 555 1234</a>
+            </div>
+            <div class="contact-item">
+                <h5>Location</h5>
+                <a href="#">San Francisco, CA</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            © 2025 Blanchard Studios. All rights reserved.
+        </div>
+        <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Behance</a>
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            
+            cursorX += dx * 0.1;
+            cursorY += dy * 0.1;
+            
+            cursor.style.left = cursorX - 20 + 'px';
+            cursor.style.top = cursorY - 20 + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effect
+        const hoverElements = document.querySelectorAll('a, button, .work-item, .service-item');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navigation background on scroll
+        const navWrapper = document.querySelector('.nav-wrapper');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navWrapper.classList.add('scrolled');
+            } else {
+                navWrapper.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero-image, .philosophy-image img');
+            
+            parallaxElements.forEach(el => {
+                const speed = el.dataset.speed || 0.5;
+                const yPos = -(scrolled * speed);
+                el.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Reveal animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Add initial styles and observe elements
+        const animateElements = document.querySelectorAll('.work-item, .service-item, .philosophy-text, .contact-item');
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

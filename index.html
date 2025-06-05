@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanchard Designs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #2c2c2c;
+            background-color: #faf8f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #2c2c2c;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c2c2c;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+            background-color: #faf8f5;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 72px);
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 20px;
+            font-weight: 300;
+            color: #666;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.2s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background-color: #2c2c2c;
+            color: #faf8f5;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        .cta-button:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 120px 0;
+            background-color: #ffffff;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+        }
+
+        .project-image {
+            aspect-ratio: 4/3;
+            background: #f5f3f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.1) contrast(0.9) saturate(0.8);
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 30px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-overlay h3 {
+            color: white;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .project-overlay p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 0;
+            background-color: #faf8f5;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            background: #f5f3f0;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.1) contrast(0.9) saturate(0.8);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 120px 0;
+            background-color: #ffffff;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background-color: #faf8f5;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e8e4de;
+            border-radius: 50%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .service-card h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 120px 0;
+            background-color: #faf8f5;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-row: span 2;
+        }
+
+        .gallery-image {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #f5f3f0 0%, #ddd7ce 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s ease;
+            position: relative;
+        }
+
+        .gallery-item:nth-child(1) .gallery-image {
+            aspect-ratio: 2/1;
+        }
+
+        .gallery-item:nth-child(4) .gallery-image {
+            aspect-ratio: 1/2;
+        }
+
+        .gallery-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 1px solid #d4cfc5;
+            opacity: 0.5;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 120px 0;
+            background-color: #ffffff;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-content p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .contact-info div {
+            text-align: center;
+        }
+
+        .contact-info h4 {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .contact-info a {
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 18px;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            background-color: #faf8f5;
+            text-align: center;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            nav .container {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(4) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .gallery-item .gallery-image {
+                aspect-ratio: 1 !important;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">BLANCHARD</div>
+            <ul class="nav-links">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Thoughtful Design,<br>Timeless Beauty</h1>
+                <p>Creating spaces that inspire and endure</p>
+                <a href="#contact" class="cta-button">GET IN TOUCH</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Projects</h2>
+                <p>A selection of our recent work</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" alt="Modern Loft Residence">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Modern Loft Residence</h3>
+                        <p>Minimalist urban living</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80" alt="Coastal Retreat">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Coastal Retreat</h3>
+                        <p>Serene beachfront design</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" alt="Executive Office Suite">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Executive Office Suite</h3>
+                        <p>Professional workspace reimagined</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1496307653780-42ee777d4833?w=800&q=80" alt="Boutique Hotel Lobby">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Boutique Hotel Lobby</h3>
+                        <p>Luxury hospitality design</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1565183997392-2f6f122e5912?w=800&q=80" alt="Art Gallery Space">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Art Gallery Space</h3>
+                        <p>Contemporary exhibition design</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=800&q=80" alt="Private Residence">
+                    </div>
+                    <div class="project-overlay">
+                        <h3>Private Residence</h3>
+                        <p>Elegant family home</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>About Blanchard Designs</h2>
+                <p>We believe in the power of minimalism and the beauty of simplicity</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>Our Philosophy</h3>
+                    <p>At Blanchard Designs, we create spaces that breathe. Our approach combines minimal aesthetics with functional beauty, ensuring every element serves a purpose while contributing to the overall harmony of your environment.</p>
+                    <br>
+                    <p>With over a decade of experience, we've refined our process to deliver designs that stand the test of time, focusing on quality materials, thoughtful layouts, and the perfect balance between form and function.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Modern architectural interior">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Services</h2>
+                <p>Comprehensive design solutions tailored to your needs</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Interior Design</h3>
+                    <p>Complete interior design services from concept to completion, creating cohesive spaces that reflect your lifestyle and aesthetic preferences.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Space Planning</h3>
+                    <p>Thoughtful space optimization that maximizes functionality while maintaining visual flow and balance throughout your environment.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Design Consultation</h3>
+                    <p>Expert guidance to help you make informed decisions about your space, from color palettes to furniture selection and beyond.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2>Design Gallery</h2>
+                <p>Explore our portfolio of completed projects</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=80" alt="Architectural complex">
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=800&q=80" alt="Interior detail">
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80" alt="Interior perspective">
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1511452885600-a3d2c9148a31?w=800&q=80" alt="Modern tower">
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1495195129352-aeb325a55b65?w=800&q=80" alt="Facade detail">
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=800&q=80" alt="Architectural lines">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Let's Create Together</h2>
+            </div>
+            <div class="contact-content">
+                <p>Ready to transform your space? We'd love to hear about your project and explore how we can bring your vision to life.</p>
+                <div class="contact-info">
+                    <div>
+                        <h4>Email</h4>
+                        <a href="mailto:hello@blancharddesigns.com">hello@blancharddesigns.com</a>
+                    </div>
+                    <div>
+                        <h4>Phone</h4>
+                        <a href="tel:+1234567890">(123) 456-7890</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BLANCHARD DESIGNS. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.backgroundColor = 'rgba(250, 248, 245, 0.98)';
+                nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+            } else {
+                nav.style.backgroundColor = 'rgba(250, 248, 245, 0.95)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Parallax effect for gallery on scroll
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const gallery = document.querySelector('.gallery-grid');
+            if (gallery) {
+                const rect = gallery.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    gallery.style.transform = `translateY(${scrolled * 0.05}px)`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
